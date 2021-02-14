@@ -44,7 +44,6 @@ function UploadProductPage(props) {
     }
 
     const submitHandler = (event) => {
-        console.log('click');
         event.preventDefault();
         if (!Title || !Description || !Price || !Continent || !Images.length === 0) {
             return alert("모든 값을 넣어주셔야 합니다.")
@@ -77,7 +76,7 @@ function UploadProductPage(props) {
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <h2> 여행 상품 업로드</h2>
             </div>
-            <Form onSubmit={submitHandler}>
+            <Form >
                 {/* DropZone */}
                 <FileUpload refreshFunction={updateImages} />
                 <br />
@@ -101,7 +100,7 @@ function UploadProductPage(props) {
                 </select>
                 <br />
                 <br />
-                <Button type="submit">
+                <Button type="submit" onClick={submitHandler}>
                     확인
                 </Button>
             </Form>

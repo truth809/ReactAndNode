@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons": "^4.4.0",
+    "@ant-design/icons": "^4.5.0",
     "@types/antd": "^1.0.0",
-    "antd": "^4.12.2",
+    "antd": "^4.12.3",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "formik": "^2.1.5",
