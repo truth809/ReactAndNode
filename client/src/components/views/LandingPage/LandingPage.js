@@ -5,7 +5,8 @@ import { RocketOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
 import Checkbox from './Sections/CheckBox';
-import { continents } from './Sections/Datas';
+import Radiobox from './Sections/RadioBox';
+import { continents, price } from './Sections/Datas';
 
 function LandingPage() {
 
@@ -103,8 +104,18 @@ function LandingPage() {
 
             {/* filter */}
 
-            {/* checkbox */}
-            <Checkbox list={continents} handleFilters={filters => handleFilters(filters, "continents")} />
+            <Row gutter={[16, 16]} style={{ marginBottom: '1rem' }}>
+                <Col lg={12} xs={24}>
+                    {/* checkbox */}
+                    <Checkbox list={continents} handleFilters={filters => handleFilters(filters, "continents")} />
+                </Col>
+                <Col lg={12} xs={24}>
+                    <Radiobox list={price} handleFilters={filters => handleFilters(filters, "price")}/>
+                </Col>
+            </Row>
+
+
+            
 
             {/* radiobox */}
 
