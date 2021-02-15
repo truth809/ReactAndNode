@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { FaCode } from "react-icons/fa";
 import axios from "axios";
 import { Col, Card, Row, Carousel } from 'antd';
 import { RocketOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
+import Checkbox from './Sections/CheckBox';
+import { continents } from './Sections/Datas';
 
 function LandingPage() {
 
@@ -41,7 +42,7 @@ function LandingPage() {
     }
 
     const loadMoreHandler = () => {
-        let skip = Skip + Limit
+        let skip = Skip + Limit;
         let body = {
             skip: Skip,
             limit: Limit,
@@ -79,7 +80,14 @@ function LandingPage() {
             </div>
 
             {/* filter */}
+
+            {/* checkbox */}
+            <Checkbox list={continents} />
+
+            {/* radiobox */}
+
             {/* serch */}
+
             {/* cards */}
 
             <Row gutter={[16, 16]}>
