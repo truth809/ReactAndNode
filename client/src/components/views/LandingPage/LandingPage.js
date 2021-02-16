@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { FaCode } from "react-icons/fa";
 import axios from "axios";
 import { Col, Card, Row, Carousel } from 'antd';
 import { RocketOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import ImageSlider from '../../utils/ImageSlider';
+import Checkbox from './Sections/CheckBox';
+import Radiobox from './Sections/RadioBox';
+import SeachFeature from './Sections/SeachFeature';
+import { continents, price } from './Sections/Datas';
 
 function LandingPage() {
 
@@ -12,6 +15,11 @@ function LandingPage() {
     const [Skip, setSkip] = useState(0)
     const [Limit, setLimit] = useState(8)
     const [PostSize, setPostSize] = useState(0)
+    const [Filters, setFilters] = useState({
+        continents: [],
+        price: []
+    })
+    const [SearchTerm, setSearchTerm] = useState("")
 
     useEffect(() => {
 
@@ -41,9 +49,9 @@ function LandingPage() {
     }
 
     const loadMoreHandler = () => {
-        let skip = Skip + Limit
+        let skip = Skip + Limit;
         let body = {
-            skip: Skip,
+            skip: skip,
             limit: Limit,
             loadMore: true
         }
@@ -59,7 +67,7 @@ function LandingPage() {
         return <Col lg={6} md={8} xs={24} key={index}>
         
                 <Card
-                    cover={<ImageSlider images={product.images} />}
+                    cover={<a href={`/product/${product._id}`}><ImageSlider images={product.images} /></a>}
                 >
                     <Meta 
                         title={product.title}
@@ -69,7 +77,58 @@ function LandingPage() {
             </Col>
     })
 
-    
+    const showFilteredResults = (filters) => {
+
+        let body = {
+            skip: 0,
+            limit: Limit,
+            filters: filters
+        }
+
+        getProducts(body)
+        setSkip(0)
+    }
+
+    const handlePrice = (value) => {
+        const data = price;
+        let array = [];
+
+        for(let key in data) {
+            if(data[key]._id === parseInt(value, 10)) {
+                array = data[key].array;
+            }
+        }
+        return array;
+    }
+
+    const handleFilters = (filters, category) => {
+        const newFilters = { ...Filters }
+
+        newFilters[category] = filters
+
+        if(category === "price") {
+            let priceValues = handlePrice(filters)
+            newFilters[category] = priceValues
+        }
+
+        showFilteredResults(newFilters)
+        setFilters(newFilters)
+    }
+
+    const updateSearchTerm = (newSearchTerm) => {
+        setSearchTerm(newSearchTerm)
+
+        let body = {
+            skip: 0,
+            limit: Limit,
+            filters: Filters,
+            searchTerm: newSearchTerm
+        }
+
+        setSkip(0)
+        setSearchTerm(newSearchTerm)
+        getProducts(body)
+    }
     
     
     return (
@@ -79,7 +138,29 @@ function LandingPage() {
             </div>
 
             {/* filter */}
+
+            <Row gutter={[16, 16]} style={{ marginBottom: '1rem' }}>
+                <Col lg={12} xs={24}>
+                    {/* checkbox */}
+                    <Checkbox list={continents} handleFilters={filters => handleFilters(filters, "continents")} />
+                </Col>
+                <Col lg={12} xs={24}>
+                    <Radiobox list={price} handleFilters={filters => handleFilters(filters, "price")}/>
+                </Col>
+            </Row>
+
+
+            
+
+            {/* radiobox */}
+
             {/* serch */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '1rem auto'}}>
+                <SeachFeature 
+                    refreshFunction={updateSearchTerm}
+                />
+            </div>
+
             {/* cards */}
 
             <Row gutter={[16, 16]}>
@@ -92,8 +173,6 @@ function LandingPage() {
                     <button onClick={loadMoreHandler}>더보기</button>
                 </div>
             }
-
-            
 
         </div>
     )
