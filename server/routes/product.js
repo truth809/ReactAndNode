@@ -66,7 +66,6 @@ router.post('/products', (req, res) => {
     }
   }
 
-  console.log(findArgs)
   
   Product.find(findArgs)
     .populate("writer")
